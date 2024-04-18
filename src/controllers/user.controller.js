@@ -44,8 +44,8 @@ const Login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    const id = user._id;
-    res.status(200).json({ message: "User logged in", id });
+    const token = user.genrateJwt();
+    res.status(200).json({ message: "User logged in", token: token});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

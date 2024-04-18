@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,6 +27,29 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const userDataSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+    },
+    work: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+
 userSchema.pre("save", function (next) {
   let user = this;
   if (!user.isModified("password")) return next();
@@ -48,7 +72,15 @@ userSchema.methods.comparePassword = async function (password) {
 };
 
 
+userSchema.methods.genrateJwt = function () {
+ console.log("genrateJwt");
+  const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+  return token;
+}
 
 const User = mongoose.model("User", userSchema);
+const UserData = mongoose.model("UserData", userDataSchema);
 
-export { User}; 
+export { User, UserData }; 
