@@ -22,11 +22,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   { timestamps: true }
 );
-
 
 const otpSchema = new mongoose.Schema(
   {
@@ -39,31 +38,10 @@ const otpSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true, index : {expires: 600} },
-
-);
-
-const userDataSchema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-    },
-    work: {
-      type: String,
-      required: true,
-    },
-  },
   { timestamps: true }
 );
+
+otpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 600});
 
 
 userSchema.pre("save", function (next) {
@@ -75,8 +53,6 @@ userSchema.pre("save", function (next) {
     next();
   });
 });
-
-
 
 userSchema.methods.comparePassword = async function (password) {
   try {
@@ -94,17 +70,16 @@ userSchema.methods.genrateOtp = function () {
   const email = this.email;
   Otp.create({ otp, email });
   return otp;
-}
-
+};
 
 userSchema.methods.genrateJwt = function () {
- console.log("genrateJwt");
+  console.log("genrateJwt");
   const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
   return token;
-}
+};
 
 const User = mongoose.model("User", userSchema);
-const UserData = mongoose.model("UserData", userDataSchema);
-export { User, UserData, Otp}; 
+
+export { User, Otp };
