@@ -1,1 +1,1 @@
-export const DB_NAME = "Authantication";
+export const DB_NAME = "Authentication";

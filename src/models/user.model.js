@@ -27,6 +27,22 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+const otpSchema = new mongoose.Schema(
+  {
+    otp: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true, index : {expires: 600} },
+
+);
+
 const userDataSchema = new mongoose.Schema(
   {
     user: {
@@ -71,6 +87,15 @@ userSchema.methods.comparePassword = async function (password) {
   }
 };
 
+const Otp = mongoose.model("Otp", otpSchema);
+
+userSchema.methods.genrateOtp = function () {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  const email = this.email;
+  Otp.create({ otp, email });
+  return otp;
+}
+
 
 userSchema.methods.genrateJwt = function () {
  console.log("genrateJwt");
@@ -82,5 +107,4 @@ userSchema.methods.genrateJwt = function () {
 
 const User = mongoose.model("User", userSchema);
 const UserData = mongoose.model("UserData", userDataSchema);
-
-export { User, UserData }; 
+export { User, UserData, Otp}; 
