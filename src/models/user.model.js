@@ -44,6 +44,7 @@ const otpSchema = new mongoose.Schema(
 otpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 600});
 
 
+
 userSchema.pre("save", function (next) {
   let user = this;
   if (!user.isModified("password")) return next();

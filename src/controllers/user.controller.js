@@ -1,5 +1,7 @@
 import { User, Otp} from "../models/user.model.js";
 import sendMail from "../middleware/sendMail.js";
+import cookieParser from "cookie-parser";
+
 const Register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -50,6 +52,13 @@ const Login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     const token = user.genrateJwt();
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
     res.status(200).json({ message: "User logged in", token: token});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
