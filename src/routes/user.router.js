@@ -8,5 +8,6 @@ router.post("/login", Login);
 router.get("/home",validateJWTToken, Home);
 router.get("/verify",validateJWTToken, Verify);
 router.post("/addData",validateJWTToken, AddData);
+router.get("/logout",validateJWTToken, Logout);
 
 export default router;

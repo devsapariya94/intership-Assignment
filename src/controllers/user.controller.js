@@ -145,5 +145,10 @@ const AddData = async (req, res) => {
 }
 
 
+const Logout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "User logged out" });
+}
+
 
 export { Register, Login, Home, Verify, AddData};
