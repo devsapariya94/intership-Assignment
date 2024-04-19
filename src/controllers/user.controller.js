@@ -110,6 +110,8 @@ const Verify = async (req, res) => {
     return res.status(400).json({ message: "Invalid OTP" });
   }
 
+  await Otp.deleteOne({ otp, email }).exec();
+
 
   user.isVerified = true;
   await user.save();
