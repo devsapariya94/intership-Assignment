@@ -151,4 +151,4 @@ const Logout = async (req, res) => {
 }
 
 
-export { Register, Login, Home, Verify, AddData};
+export { Register, Login, Home, Verify, AddData, Logout};

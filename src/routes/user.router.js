@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Register,Login, Home, Verify, AddData} from "../controllers/user.controller.js";
+import { Register,Login, Home, Verify, AddData, Logout} from "../controllers/user.controller.js";
 import validateJWTToken from "../middleware/validateJWTToken.js";
 const router = Router();
 
