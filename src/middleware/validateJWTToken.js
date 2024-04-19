@@ -11,8 +11,9 @@ const validateJWTToken = (req, res, next) => {
     req.user = decoded;
     //is token expired
     if (decoded.exp < Date.now().valueOf() / 1000) {
-      return res.status(401).json({ message: "Unauthorized" });
+      res.status(401).json({ message: "Token expired" });
     }
+    
     next();
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized" });

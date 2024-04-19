@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isDataFilled: {
+      type: Boolean,
+      default: false,
+    },
+    
   },
   { timestamps: true }
 );
@@ -43,7 +48,27 @@ const otpSchema = new mongoose.Schema(
 
 otpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 600});
 
-
+const userDataSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+    },
+    work: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 userSchema.pre("save", function (next) {
   let user = this;
@@ -82,5 +107,5 @@ userSchema.methods.genrateJwt = function () {
 };
 
 const User = mongoose.model("User", userSchema);
-
-export { User, Otp };
+const UserData = mongoose.model("UserData", userDataSchema);
+export { User, UserData, Otp };
